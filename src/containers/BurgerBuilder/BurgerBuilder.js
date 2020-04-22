@@ -93,26 +93,36 @@ class BurgerBuilder extends React.Component {
     }
 
     purchaseContinueHandler = () => {
-        this.setState({
-            loading: true
-        })
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Daniel Ionita',
-                address: {
-                    street: 'Touhy Ave',
-                    zipCode: 60018,
-                    country: 'SUA'
-                },
-                email: 'test@gmail.com'
-            },
-            deliveryMethod: 'UberEats'
+
+        const queryParams=[];
+        for(let i in this.state.ingredients){
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
         }
-        axios.post('/orders.json', order)
-            .then(response => this.setState({ loading: false, purchasing: false }))
-            .catch(error => this.setState({ loading: false, purchasing: false }));
+        const queryString = queryParams.join('&')
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString
+        })
+        // this.setState({
+        //     loading: true
+        // })
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: 'Daniel Ionita',
+        //         address: {
+        //             street: 'Touhy Ave',
+        //             zipCode: 60018,
+        //             country: 'SUA'
+        //         },
+        //         email: 'test@gmail.com'
+        //     },
+        //     deliveryMethod: 'UberEats'
+        // }
+        // axios.post('/orders.json', order)
+        //     .then(response => this.setState({ loading: false, purchasing: false }))
+        //     .catch(error => this.setState({ loading: false, purchasing: false }));
     }
 
     render() {
