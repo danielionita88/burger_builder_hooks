@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Layout from './containers/Layout/Layout';
@@ -13,43 +13,43 @@ const Orders = React.lazy(() => import('./containers/Orders/Orders'));
 const Auth = React.lazy(() => import('./containers/Auth/Auth'));
 
 
-class App extends React.Component {
+const app = () => {
 
-  componentDidMount() {
-    this.props.onTryAutoSignup()
-  }
+  useEffect(() => {
+    props.onTryAutoSignup()
+  }, []);
 
-  render() {
-    let routes = (
+
+  let routes = (
+    <Switch>
+      <Route path='/auth' component={Auth} />
+      <Route path='/' exact component={BurgerBuilder} />
+      <Redirect to='/' />
+    </Switch>
+  )
+
+  if (props.isAuthenticated) {
+    routes = (
       <Switch>
+        <Route path='/checkout' component={Checkout} />
+        <Route path='/orders' component={Orders} />
+        <Route path='/logout' component={Logout} />
         <Route path='/auth' component={Auth} />
         <Route path='/' exact component={BurgerBuilder} />
         <Redirect to='/' />
       </Switch>
     )
+  }
+  return (
+    <div >
+      <Layout>
+        <Suspense fallback={<div>Loading...</div>}>
+          {routes}
+        </Suspense>
+      </Layout>
+    </div>
+  );
 
-    if (this.props.isAuthenticated) {
-      routes = (
-        <Switch>
-          <Route path='/checkout' component={Checkout} />
-          <Route path='/orders' component={Orders} />
-          <Route path='/logout' component={Logout} />
-          <Route path='/auth' component={Auth} />
-          <Route path='/' exact component={BurgerBuilder} />
-          <Redirect to='/' />
-        </Switch>
-      )
-    }
-    return (
-      <div >
-        <Layout>
-          <Suspense fallback={<div>Loading...</div>}>
-            {routes}
-          </Suspense>
-        </Layout>
-      </div>
-    );
-  };
 }
 
 const mapStateToProps = state => {
@@ -64,4 +64,4 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(app);
