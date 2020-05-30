@@ -10,7 +10,7 @@ import * as actions from '../../../store/actions/index';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import { updateObject, checkValidity } from '../../../shared/utility';
 
-const contactData = props => {
+const ContactData = props => {
     const [orderForm, setOrderForm] = useState({
         name: {
             elementType: 'input',
@@ -182,4 +182,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(contactData, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));

@@ -13,11 +13,13 @@ const Orders = React.lazy(() => import('./containers/Orders/Orders'));
 const Auth = React.lazy(() => import('./containers/Auth/Auth'));
 
 
-const app = () => {
+const App = (props) => {
+
+  const { onTryAutoSignup } = props;
 
   useEffect(() => {
-    props.onTryAutoSignup()
-  }, []);
+    onTryAutoSignup();
+  }, [onTryAutoSignup]);
 
 
   let routes = (
@@ -64,4 +66,4 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(app);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -8,15 +8,17 @@ import * as actions from '../../store/actions/index';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 
-const orders = props => {
+const Orders = props => {
+
+    const {orders, loading, token, userId, onFetchOrders} = props
 
     useEffect(() => {
-        props.onFetchOrders(props.token, props.userId)
-    }, [])
+        onFetchOrders(token, userId)
+    }, [token, userId, onFetchOrders])
 
-    let orders = <Spinner />
-    if (!props.loading) {
-        orders = props.orders.map(order => (
+    let ord = <Spinner />
+    if (!loading) {
+        ord = orders.map(order => (
             <Order
                 key={order.id}
                 ingredients={order.ingredients}
@@ -26,7 +28,7 @@ const orders = props => {
     
     return (
         <div>
-            {orders}
+            {ord}
         </div>
     );
 }
@@ -46,4 +48,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(orders, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));
